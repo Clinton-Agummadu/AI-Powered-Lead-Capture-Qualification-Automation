@@ -1,0 +1,518 @@
+{
+  "name": "AI-Powered Lead Capture & Qualification Automation",
+  "nodes": [
+    {
+      "parameters": {
+        "sendTo": "={{$json.Email}}",
+        "subject": "We've received your project request — NovaFlow Digital",
+        "message": "=<div style=\"font-family:Arial,sans-serif;line-height:1.6;color:#222;max-width:600px;margin:auto;\">    <h2>Hi {{$json.Name}}, 👋</h2>    <p>Thank you for reaching out to <strong>NovaFlow Digital</strong>.</p>    <p>     We've received your project request and our team will review your requirements shortly.     We’ll get back to you with the next steps.   </p>    <div style=\"background:#f5f5f5;padding:18px;border-radius:10px;margin:20px 0;\">     <p><strong>Project:</strong> {{$json.Category}}</p>     <p><strong>Priority:</strong> {{$json.Priority}}</p>     <p><strong>Your request:</strong><br>{{$json.Message}}</p>   </div>    <p>     If you have any additional information you'd like us to consider,     simply reply to this email.   </p>    <p>We look forward to working with you. 🚀</p>    <p>     Best regards,<br>     <strong>NovaFlow Digital</strong><br>     Websites • Web Apps • AI Automation   </p>  </div>",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        736,
+        144
+      ],
+      "id": "4cc92418-b143-444e-9a7f-56f4e51b98f3",
+      "name": "client's email",
+      "webhookId": "b70ccf09-4b73-4eb9-8971-7d036f31fd51",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "zqlDcx2e8tRbzuCh",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "chukwuemekad42@gmail.com",
+        "subject": "=New Lead Received — {{$json.Name}}",
+        "message": "=<h2>🎯 New Lead Received</h2>\n\n<p><strong>Name:</strong> {{$json.Name}}</p>\n<p><strong>Email:</strong> {{$json.Email}}</p>\n\n<hr>\n\n<h3>🤖 AI Lead Qualification</h3>\n\n<p><strong>Category:</strong> {{$json.Category}}</p>\n<p><strong>Priority:</strong> {{$json.Priority}}</p>\n<p><strong>Lead Score:</strong> {{$json[\"Lead Score\"]}} / 100</p>\n<p><strong>Temperature:</strong> {{$json.Temperature}}</p>\n<p><strong>Estimated Value:</strong> {{$json[\"Estimated Value\"]}}</p>\n\n<p><strong>Why This Score:</strong><br>\n{{$json[\"Score Reason\"]}}\n</p>\n\n<p><strong>Recommended Next Action:</strong><br>\n{{$json[\"Next Action\"]}}\n</p>\n\n<hr>\n\n<h3>📝 Lead Summary</h3>\n\n<p><strong>Summary:</strong><br>\n{{$json.Summary}}\n</p>\n\n<p><strong>What They Need:</strong><br>\n{{$json.Need}}\n</p>\n\n<hr>\n\n<h3>💬 Original Message</h3>\n\n<p>{{$json.Message}}</p>",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        688,
+        -112
+      ],
+      "id": "ea0b1445-5d64-489c-9a53-9d6ba93a385f",
+      "name": "owner's email",
+      "webhookId": "dd00fc04-f9cc-4c68-b777-207ed92604bf",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "zqlDcx2e8tRbzuCh",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "8845230921",
+        "text": "=🚨 *NEW LEAD CAPTURED*  👤 *Name:* {{ $json[\"Name\"] }} ✉️ *Email:* {{ $json[\"Email\"] }} 📊 *Score:* {{ $json[\"Lead Score\"] }} / 10 🔥 *Temperature:* {{ $json[\"Temperature\"] }} 💬 *Reason:* {{ $json[\"Score Reason\"] }}",
+        "replyMarkup": "forceReply",
+        "forceReply": {},
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        752,
+        352
+      ],
+      "id": "937353e5-f2e0-4cd1-8ab9-4f4561244b01",
+      "name": "alert node",
+      "webhookId": "b3c90e97-9345-4e16-9f9d-1808dbe9ee4c",
+      "retryOnFail": true,
+      "credentials": {
+        "telegramApi": {
+          "id": "dp95lTEdaemmgWQR",
+          "name": "Telegram account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1fh1IQzxLOYDNMFwSyeh8PuLSokbsIdgxkytDkiKSSPk",
+          "mode": "list",
+          "cachedResultName": "AI Lead Tracker",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1fh1IQzxLOYDNMFwSyeh8PuLSokbsIdgxkytDkiKSSPk/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1fh1IQzxLOYDNMFwSyeh8PuLSokbsIdgxkytDkiKSSPk/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $json.Name }}",
+            "Category": "={{ $json.Category }}",
+            "Summary": "={{ $json.Summary }}",
+            "Need": "={{$json.Need}}",
+            "Priority": "={{$json.Priority}}",
+            "Next Action": "={{$json['Next Action']}}",
+            "Message": "={{ $json.Message }}",
+            "Email": "={{ $json.Email }}",
+            "Lead Score": "={{ $json['Lead Score'] }}",
+            "Temperature": "={{ $json.Temperature }}",
+            "Estimated Value": "={{ $json['Estimated Value'] }}",
+            "Score Reason": "={{ $json['Score Reason'] }}",
+            "Lead ID": "={{ $json['Lead ID'] }}",
+            "Date": "={{ $json.Date }}",
+            "Status": "={{ $json.Status }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Message",
+              "displayName": "Message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Category",
+              "displayName": "Category",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Summary",
+              "displayName": "Summary",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Need",
+              "displayName": "Need",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Priority",
+              "displayName": "Priority",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Next Action",
+              "displayName": "Next Action",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Lead Score",
+              "displayName": "Lead Score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Temperature",
+              "displayName": "Temperature",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Estimated Value",
+              "displayName": "Estimated Value",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Score Reason",
+              "displayName": "Score Reason",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Lead ID",
+              "displayName": "Lead ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        880,
+        0
+      ],
+      "id": "93281544-a658-4cd8-869a-6512cd17d326",
+      "name": "CRM",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "TqHyY2isZUjOfeTu",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "d741b880-c5d5-47b7-b204-e65ad8014782",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -64,
+        -80
+      ],
+      "id": "95edfb14-1334-4309-af51-1f612c24dcba",
+      "name": "Trigger",
+      "webhookId": "d741b880-c5d5-47b7-b204-e65ad8014782"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "models/gemini-3-flash-preview"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=You are an AI lead analysis and sales qualification assistant.\n\nAnalyze the lead information received from the webhook.\n\nReturn ONLY valid JSON. Do not include markdown, explanations, or code fences.\n\nReturn exactly these fields:\n\n{\n  \"name\": \"\",\n  \"email\": \"\",\n  \"message\": \"\",\n  \"category\": \"\",\n  \"summary\": \"\",\n  \"need\": \"\",\n  \"priority\": \"\",\n  \"lead_score\": 0,\n  \"temperature\": \"\",\n  \"estimated_value\": \"\",\n  \"score_reason\": \"\",\n  \"next_action\": \"\"\n}\n\nRules:\n\n1. Preserve the lead's name, email, and message exactly as received.\n2. \"category\" should identify what service/product the lead is interested in.\n3. \"summary\" should briefly summarize what the lead wants.\n4. \"need\" should clearly describe the lead's main requirement.\n5. \"priority\" must be one of: Low, Medium, High.\n6. \"lead_score\" must be a number from 0 to 100.\n7. \"temperature\" must be one of: Cold, Warm, Hot.\n8. \"estimated_value\" should estimate the potential value of the lead based on the request. Use a reasonable currency amount or range.\n9. \"score_reason\" should briefly explain why the lead received that score.\n10. \"next_action\" should recommend the best sales follow-up action.\n\nLead information:\n\nName: {{ $('Trigger').item.json.body.Name }}\nEmail: {{ $('Trigger').item.json.body.Email }}\nMessage: {{ $('Trigger').item.json.body.Message }}\n\nAnalyze the message and determine all fields based only on the information provided."
+            }
+          ]
+        },
+        "jsonOutput": true,
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1.2,
+      "position": [
+        112,
+        32
+      ],
+      "id": "e1922244-fbd6-46e6-a9a6-fd2a6730dec0",
+      "name": "intelligent brain",
+      "retryOnFail": true,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googlePalmApi": {
+          "id": "CmZMvkHys7sB1b3h",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f0e9e04a-9783-4d17-953a-465c7621cc2f",
+              "name": "=Category",
+              "value": "={{ JSON.parse($json.content.parts[0].text).category }}",
+              "type": "string"
+            },
+            {
+              "id": "2e60d5ed-1cca-4c0c-b350-6544df740d40",
+              "name": "=Summary",
+              "value": "={{ JSON.parse($json.content.parts[0].text).summary }}",
+              "type": "string"
+            },
+            {
+              "id": "abc993a7-f16c-4644-af09-306a96fd35cc",
+              "name": "=Need",
+              "value": "={{ JSON.parse($json.content.parts[0].text).need }}",
+              "type": "string"
+            },
+            {
+              "id": "9e584a1f-9604-4128-a10f-0c29754c1bac",
+              "name": "=Priority",
+              "value": "={{ JSON.parse($json.content.parts[0].text).priority }}",
+              "type": "string"
+            },
+            {
+              "id": "7fffd215-3c1b-4889-9913-9a36cf83cf76",
+              "name": "=Next Action",
+              "value": "={{ JSON.parse($json.content.parts[0].text).next_action }}",
+              "type": "string"
+            },
+            {
+              "id": "a9135a73-2bdd-4aa9-9779-42e618c2da2d",
+              "name": "Message",
+              "value": "={{ JSON.parse($json.content.parts[0].text).message }}",
+              "type": "string"
+            },
+            {
+              "id": "ac04d0af-5cad-4ab3-a3fe-79830bd83f90",
+              "name": "Name",
+              "value": "={{ JSON.parse($json.content.parts[0].text).name }}",
+              "type": "string"
+            },
+            {
+              "id": "1309b9e4-87d4-42c0-a8b9-263d9f9d478c",
+              "name": "Email",
+              "value": "={{ JSON.parse($json.content.parts[0].text).email }}",
+              "type": "string"
+            },
+            {
+              "id": "a2be0234-13ab-4fa2-a6bb-c498d47a0be3",
+              "name": "=Lead Score",
+              "value": "={{ JSON.parse($json.content.parts[0].text).lead_score }}",
+              "type": "string"
+            },
+            {
+              "id": "aa2cd520-bd79-4032-8f4e-bf51c1f8f580",
+              "name": "=Temperature",
+              "value": "={{ JSON.parse($json.content.parts[0].text).temperature }}",
+              "type": "string"
+            },
+            {
+              "id": "73ffd3e3-a941-49ae-9bad-d1243c0cb699",
+              "name": "=Estimated Value",
+              "value": "={{ JSON.parse($json.content.parts[0].text).estimated_value }}",
+              "type": "string"
+            },
+            {
+              "id": "a9fadc52-ce40-4d99-beae-7788a5523079",
+              "name": "=Score Reason",
+              "value": "={{ JSON.parse($json.content.parts[0].text).score_reason }}",
+              "type": "string"
+            },
+            {
+              "id": "db8c4a66-3af3-49bb-a731-d8b986901796",
+              "name": "=Lead ID",
+              "value": "={{ $now.toMillis() }}",
+              "type": "string"
+            },
+            {
+              "id": "50a11652-b58d-4d17-92fe-86d125e36bec",
+              "name": "=Date",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            },
+            {
+              "id": "c4783045-f5b2-43e6-8516-8237ef97744a",
+              "name": "=Status",
+              "value": "=New",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": "={{ true }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        400,
+        144
+      ],
+      "id": "3b9eee37-d228-44cb-a9d3-529c06de166e",
+      "name": "data mapping"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Trigger": {
+      "main": [
+        [
+          {
+            "node": "intelligent brain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "intelligent brain": {
+      "main": [
+        [
+          {
+            "node": "data mapping",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "data mapping": {
+      "main": [
+        [
+          {
+            "node": "client's email",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "owner's email",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "CRM",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "alert node",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "timeSavedMode": "fixed",
+    "timezone": "Africa/Lagos",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "versionId": "ce1561a0-9458-4154-b931-6a79035c4979",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "13ff3582439a99c8dc80561afe729fccd8e5ecb467e032acc521d2dc3b6fc2df"
+  },
+  "nodeGroups": [],
+  "id": "HZsfMftQHWwtpNRe",
+  "tags": []
+}
